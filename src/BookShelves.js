@@ -15,11 +15,6 @@ class BookShelves extends React.Component {
         });
         
         this.state = {
-            shelves: [
-                {id: 'currentlyReading', label:'Currently Reading'},
-                {id: 'wantToRead', label:'Want to Read'},
-                {id: 'read', label:'Read'},
-            ],
             books: []
         };
     }
@@ -30,17 +25,9 @@ class BookShelves extends React.Component {
         this.setState({ books: updated });
     }
 
-    componentDidMount () {
-        console.log('mount');
-    }
-
-    componentDidUpdate () {
-        console.log('update');
-        console.log(this.state.books);
-    }
-
     render () {
-        const {books , shelves} = this.state;
+        const { books } = this.state;
+        const { shelves } = this.props;
 
         return (
             <div className="list-books">
@@ -52,11 +39,13 @@ class BookShelves extends React.Component {
                         return (
                             <div className="bookshelf" key={shelf.id}>
                                 <h2 className="bookshelf-title">{shelf.label}</h2>
-                                <BookList
-                                    books={books.filter(book => book.shelf === shelf.id)}
-                                    shelves={shelves}
-                                    onBookMove={this.onBookMove}
-                                />
+                                <div className="bookshelf-books">
+                                    <BookList
+                                        books={books.filter(book => book.shelf === shelf.id)}
+                                        shelves={shelves}
+                                        onBookMove={this.onBookMove}
+                                    />
+                                </div>
                             </div>
                         )
                     })}

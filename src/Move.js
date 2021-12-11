@@ -6,7 +6,6 @@ function Move (props) {
     const onChange = selected => {
         const selectedIndex = selected.target.selectedIndex;
         const newShelf = selectedIndex === 4 ? 'none' : shelves[selectedIndex-1].id;
-        console.log(newShelf + ' - ' + typeof newShelf);
         BooksAPI.update(book, newShelf);
         onBookMove(book.id, newShelf);
     };

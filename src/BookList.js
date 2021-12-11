@@ -5,23 +5,21 @@ function BookList (props) {
     const { books, shelves , onBookMove} = props;
 
     return (
-        <div className="bookshelf-books">
-                      <ol className="books-grid">
-                          {books.map(book => {
-                              return (
+        <ol className="books-grid">
+            {books.map(book => {
+                return (
 
-                                <li key={book.id}>
-                                    <Book
-                                        book={book}
-                                        shelves={shelves}
-                                        onBookMove={onBookMove}
-                                    />
-                                </li>
-                              )
-                            })
-                          }
-                      </ol>
-                    </div>
+                <li key={book.id}>
+                    <Book
+                        book={book}
+                        shelves={shelves}
+                        onBookMove={onBookMove}
+                    />
+                </li>
+                )
+            })
+            }
+        </ol>
     );
 
 
