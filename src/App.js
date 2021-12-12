@@ -10,12 +10,13 @@ class BooksApp extends React.Component {
   constructor (props) {
     super(props);
 
+    this.shelves = [
+      {id: 'currentlyReading', label:'Currently Reading'},
+      {id: 'wantToRead', label:'Want to Read'},
+      {id: 'read', label:'Read'}
+    ];
+
     this.state = {
-      shelves: [
-        {id: 'currentlyReading', label:'Currently Reading'},
-        {id: 'wantToRead', label:'Want to Read'},
-        {id: 'read', label:'Read'},
-      ],
       books: []
     }
   }
@@ -27,50 +28,22 @@ class BooksApp extends React.Component {
     });
   }
 
-  onNavigateToHome = () => {
-    this.setState({ books: [] })
-    BooksAPI.getAll().then(books => {
-      this.setState({
-          books: books
-      });
-  });
-  }
-
-  onNavigateToSearch = () => {
-    this.setState({ books: [] })
-  }
-
-  onBookMove = (id, newShelf) => {
+  onBookMove = (book, newShelf) => {
     const copyBooks = [...this.state.books];
-    const updated = copyBooks.map(b => b.id === id ? {...b, shelf: newShelf} : b);
+    const bookFoundOnShelf = copyBooks.filter(b => b.id === book.id);
+    let updated = [];
+    if (bookFoundOnShelf.length === 1) {
+      updated = copyBooks.map(b => b.id === book.id ? {...b, shelf: newShelf} : b);
+    } else {
+      book['shelf'] = newShelf
+      updated = [...copyBooks, book];
+    }
     this.setState({ books: updated });
   }
 
-  onSearch = (queryResult) => {
-    queryResult
-    .then(books => {
-      if (books.length > 0) {
-        this.setState({
-          books: books,
-        })
-      } else {
-        this.setState({
-          books: [],
-        })
-      }
-    })
-    .catch(err => {
-      console.log('Error searching books:' + err);
-      this.setState({
-        books: [],
-      })
-    });
-  }
-
-
   render() {
 
-    const {books, shelves} = this.state;
+    const {books} = this.state;
 
     return (
       <div className="app">
@@ -79,19 +52,16 @@ class BooksApp extends React.Component {
             exact path='/'
             element={<BookShelves
               books={books}
-              shelves={shelves}
+              shelves={this.shelves}
               onBookMove={this.onBookMove}
-              onGoToSearch={this.onNavigateToSearch}
             />}
           />
           <Route
             exact path='/search'
             element={<SearchBooks
               books={books}
-              shelves={shelves}
+              shelves={this.shelves}
               onBookMove={this.onBookMove}
-              onSearch={this.onSearch}
-              onGoToHome={this.onNavigateToHome}
             />}
           />
         </Routes>

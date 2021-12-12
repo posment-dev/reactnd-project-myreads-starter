@@ -7,7 +7,7 @@ class BookShelves extends React.Component {
     
 
     render () {
-        const { shelves, onBookMove, books, onGoToSearch} = this.props;
+        const { shelves, onBookMove, books} = this.props;
 
         return (
             <div className="list-books">
@@ -32,7 +32,7 @@ class BookShelves extends React.Component {
                 </div>
                 <div className="open-search">
                 <Link to='/search'>
-                    <button className='open-search' onClick={onGoToSearch}>
+                    <button className='open-search'>
                         Add a book
                     </button>
                 </Link>
