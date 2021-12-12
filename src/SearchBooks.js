@@ -9,50 +9,28 @@ class SearchBooks extends React.Component {
     super(props);
 
     this.state = {
-      searchTerm: '',
-      booksFound: []
+      searchTerm: ''
     };
   }
 
   updateSearch = (event) => {
     const searchTerm = event.target.value;
-    BooksAPI.search(searchTerm)
-    .then(books => {
-      if (books.length > 0) {
-        this.setState({
-          booksFound: books,
-        })
-      } else {
-        this.setState({
-          booksFound: [],
-        })
-      }
-    })
-    .catch(err => {
-      console.log('Error searching books:' + err);
-      this.setState({
-        booksFound: [],
-      })
-    });
+    this.props.onSearch(BooksAPI.search(searchTerm));
     this.setState({ searchTerm: searchTerm });
   };
 
-  onBookMove = (id, newShelf) => {
-    const copyBooks = [...this.state.booksFound];
-    const updated = copyBooks.map(b => b.id === id ? {...b, shelf: newShelf} : b);
-    this.setState({ booksFound: updated });
-  }
-
   render () {
 
-    const { searchTerm, booksFound } = this.state;
-    const { shelves } = this.props;
+    const { searchTerm } = this.state;
+    const { shelves, onBookMove, books, onGoToHome } = this.props;
 
 
     return (
         <div className="search-books">
         <div className="search-books-bar">
-          <Link className="close-search" to='/'>Close</Link>
+          <Link to='/'>
+            <button className="close-search" onClick={onGoToHome}>Close</button>
+          </Link>
           <div className="search-books-input-wrapper">
             {/*
               NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -73,9 +51,9 @@ class SearchBooks extends React.Component {
         </div>
         <div className="search-books-results">
           <BookList
-            books={booksFound}
+            books={books}
             shelves={shelves}
-            onBookMove={this.onBookMove}
+            onBookMove={onBookMove}
           />
         </div>
       </div>
