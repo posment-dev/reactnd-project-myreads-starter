@@ -10,8 +10,10 @@ function Move (props) {
         onBookMove(book.id, newShelf);
     };
 
+    const defaultValue = 'shelf' in book ? book.shelf : 'none'; 
+
     return (
-        <select defaultValue={book.shelf} onChange={onChange}>
+        <select defaultValue={defaultValue} onChange={onChange}>
             <option value="move" disabled>Move to...</option>
             {shelves.map(shelf => {
                 return (
