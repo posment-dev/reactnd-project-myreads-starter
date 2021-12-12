@@ -11,22 +11,31 @@ class SearchBooks extends React.Component {
     this.state = {
       searchTerm: '',
       booksFound: []
-    }
+    };
   }
 
   updateSearch = (event) => {
     const searchTerm = event.target.value;
     BooksAPI.search(searchTerm)
-    .then(books => this.setState({
-        booksFound: books,
-      })
-    )
-    .catch(err => this.setState({
+    .then(books => {
+      if (books.length > 0) {
+        this.setState({
+          booksFound: books,
+        })
+      } else {
+        this.setState({
+          booksFound: [],
+        })
+      }
+    })
+    .catch(err => {
+      console.log('Error searching books:' + err);
+      this.setState({
         booksFound: [],
       })
-    );
+    });
     this.setState({ searchTerm: searchTerm });
-  }
+  };
 
   onBookMove = (id, newShelf) => {
     const copyBooks = [...this.state.booksFound];
@@ -34,44 +43,44 @@ class SearchBooks extends React.Component {
     this.setState({ booksFound: updated });
   }
 
-    render () {
+  render () {
 
-      const { searchTerm, booksFound } = this.state;
-      const { shelves } = this.props;
+    const { searchTerm, booksFound } = this.state;
+    const { shelves } = this.props;
 
 
-        return (
-            <div className="search-books">
-            <div className="search-books-bar">
-              <Link className="close-search" to='/'>Close</Link>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+    return (
+        <div className="search-books">
+        <div className="search-books-bar">
+          <Link className="close-search" to='/'>Close</Link>
+          <div className="search-books-input-wrapper">
+            {/*
+              NOTES: The search from BooksAPI is limited to a particular set of search terms.
+              You can find these search terms here:
+              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input
-                  type="text"
-                  placeholder="Search by title or author"
-                  value={searchTerm}
-                  onChange={(event => this.updateSearch(event))}
-                />
+              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+              you don't find a specific author or title. Every search is limited by search terms.
+            */}
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={searchTerm}
+              onChange={(event => this.updateSearch(event))}
+            />
 
-              </div>
-            </div>
-            <div className="search-books-results">
-              <BookList
-                books={booksFound}
-                shelves={shelves}
-                onBookMove={this.onBookMove}
-              />
-            </div>
           </div>
-        )
-    }
+        </div>
+        <div className="search-books-results">
+          <BookList
+            books={booksFound}
+            shelves={shelves}
+            onBookMove={this.onBookMove}
+          />
+        </div>
+      </div>
+    )
+  };
 }
 
 export default SearchBooks;
