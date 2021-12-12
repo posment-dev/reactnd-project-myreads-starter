@@ -78,8 +78,8 @@ class SearchBooks extends React.Component {
           />
         </div>
       </div>
-    )
-  };
+    );
+  }
 }
 
 export default SearchBooks;

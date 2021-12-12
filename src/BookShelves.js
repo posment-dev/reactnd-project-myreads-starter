@@ -38,7 +38,7 @@ class BookShelves extends React.Component {
                 </Link>
               </div>
             </div>
-        )
+        );
     }
 
 

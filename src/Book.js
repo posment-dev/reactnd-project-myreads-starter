@@ -4,11 +4,11 @@ function Book (props) {
 
     const {book, shelves, onBookMove} = props;
 
-    const thumbnail = 'imageLinks' in book 
-        && 'thumbnail' in book.imageLinks ?
+    const thumbnail = book.hasOwnProperty('imageLinks')
+        && book.imageLinks.hasOwnProperty('thumbnail') ?
         book.imageLinks.thumbnail: '';
-    const title = 'title' in book ? book.title: '';
-    const authors = 'authors' in book && book.authors.length > 0? book.authors: '';
+    const title = book.hasOwnProperty('title') ? book.title: '';
+    const authors = book.hasOwnProperty('authors') && book.authors.length > 0? book.authors: '';
 
     return (
         <div className="book">
@@ -23,7 +23,7 @@ function Book (props) {
             <div className="book-title">{title}</div>
             <div className="book-authors">{authors.toString()}</div>
         </div>
-    )
+    );
 }
 
 export default Book;

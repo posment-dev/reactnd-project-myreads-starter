@@ -18,7 +18,7 @@ class BooksApp extends React.Component {
 
     this.state = {
       books: []
-    }
+    };
   }
   componentDidMount () {
     BooksAPI.getAll().then(books => {
@@ -66,7 +66,7 @@ class BooksApp extends React.Component {
           />
         </Routes>
       </div>
-    )
+    );
   }
 }
 

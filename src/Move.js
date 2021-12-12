@@ -10,7 +10,7 @@ function Move (props) {
         onBookMove(book, newShelf);
     };
 
-    const defaultValue = 'shelf' in book ? book.shelf : 'none'; 
+    const defaultValue = book.hasOwnProperty('shelf') ? book.shelf : 'none'; 
 
     return (
         <select defaultValue={defaultValue} onChange={onChange}>
@@ -25,7 +25,7 @@ function Move (props) {
             })}
             <option value="none">None</option>
         </select>
-    )
+    );
 }
 
 export default Move;
