@@ -8,10 +8,13 @@ class SearchBooks extends React.Component {
   constructor (props) {
     super(props);
 
+    this.updateSearch = this.updateSearch.bind(this);
+
     this.state = {
       searchTerm: '',
       booksFound: []
     };
+
   }
 
   updateSearch = (event) => {
